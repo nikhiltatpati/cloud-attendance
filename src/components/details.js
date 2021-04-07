@@ -32,7 +32,7 @@ const Details = ({ history }) => {
       }
     });
   }, []);
-  
+
   if (data) {
     return (
       <div className="flex flex-col bg-dark items-center justify-center h-full p-7">
@@ -50,6 +50,7 @@ const Details = ({ history }) => {
                 <div>
                   <span className=" text-white">Entry Time : </span>
                   <span className="font-bold text-white">
+                    {" "}
                     {getTime(item.entry)}
                   </span>
                 </div>
@@ -67,6 +68,18 @@ const Details = ({ history }) => {
                     {item.totalTime}
                   </span>
                 </div>
+
+                {item.workDone && (
+                  <div>
+                    <span className=" text-white">Work Done:</span>
+                    <span className="font-bold text-white">
+                      {" "}
+                      <div className="bg-dark m-2 p-2 rounded-lg">
+                        {item.workDone ?? ``}
+                      </div>
+                    </span>
+                  </div>
+                )}
               </div>
             );
           })}

@@ -36,9 +36,9 @@ function updateTotalWorkTime(stime, etime) {
 
 const Attendance = ({ history }) => {
   const [show, setShow] = React.useState(false);
-  const { id } = useParams("id");
   const [data, setData] = React.useState({});
   const [rem, setRem] = React.useState(false);
+  const [workDone, setWorkDone] = React.useState("");
 
   function handleEntryClick() {
     const date = new Date();
@@ -50,6 +50,7 @@ const Attendance = ({ history }) => {
     const log = {
       date: today,
       entry: time,
+      workDone: "",
       exit: "",
       in_time: timestamp,
       out_time: "",
@@ -73,6 +74,7 @@ const Attendance = ({ history }) => {
     const log = {
       date: currentData.date,
       entry: currentData.entry,
+      workDone: workDone,
       exit: time,
       in_time: currentData.in_time,
       out_time: timestamp,
@@ -127,8 +129,9 @@ const Attendance = ({ history }) => {
     employeesRef.on("value", (snapshot) => {
       let employees = snapshot.val();
       let newState = [];
+      const myId = localStorage.getItem("id");
       for (let item in employees) {
-        if (employees[item].id == id) {
+        if (employees[item].id == myId) {
           setData({
             itemId: item,
             id: employees[item].id,
@@ -143,32 +146,33 @@ const Attendance = ({ history }) => {
     });
   }, []);
 
-
   return (
     <div className="bg-dark">
-      <div className="flex flex-row-reverse">
-        <button
-          className="p-4 bg-light rounded-lg shadow-lg m-2 text-white"
-          onClick={() => {
-            window.localStorage.removeItem("role");
-            window.localStorage.removeItem("id");
-            history.push("/");
-            window.location.reload();
-          }}
-        >
-          Logout
-        </button>
-        <button
-          className="bg-light text-white rounded-lg shadow-lg p-4 m-2"
-          onClick={() => {
-            history.push(`/details/${localStorage.getItem("id")}`);
-          }}
-        >
-          View Details
-        </button>
+      <div className="fixed w-screen">
+        <div className="float-right">
+          <button
+            className="p-4 bg-light rounded-lg shadow-lg m-2 text-white"
+            onClick={() => {
+              window.localStorage.removeItem("role");
+              window.localStorage.removeItem("id");
+              history.push("/");
+              window.location.reload();
+            }}
+          >
+            Logout
+          </button>
+          <button
+            className="bg-light text-white rounded-lg shadow-lg p-4 m-2"
+            onClick={() => {
+              history.push(`/details/${localStorage.getItem("id")}`);
+            }}
+          >
+            View Details
+          </button>
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="font-bold text-5 text-white">
+        <h1 className="font-bold text-5 text-white text-center">
           Welcome To Cloud Attendance Management System
         </h1>
         <div className="p-6 m-4">
@@ -181,12 +185,23 @@ const Attendance = ({ history }) => {
             </button>
           )}
           {rem && (
-            <button
-              className="bg-secondary rounded-lg text-white p-4 m-2"
-              onClick={handleExitClick}
-            >
-              Mark Today's Exit Attendance
-            </button>
+            <div>
+              <div className="flex w-auto justify-center">
+                <textarea
+                  placeholder="Enter Today's work done...."
+                  className="m-2 p-4 h-60 w-full rounded-lg bg-light text-white placeholder-secondary"
+                  onChange={(evt) => {
+                    setWorkDone(evt.target.value);
+                  }}
+                />
+              </div>
+              <button
+                className="bg-secondary rounded-lg text-white p-4 m-2"
+                onClick={handleExitClick}
+              >
+                Mark Today's Exit Attendance
+              </button>
+            </div>
           )}
         </div>
         {show && (

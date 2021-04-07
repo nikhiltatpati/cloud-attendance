@@ -2,8 +2,8 @@ import React from "react";
 
 const Home = ({ history }) => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-dark">
-      <h1 className="font-bold text-5 text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-dark text-center">
+      <h1 className="font-bold text-5 text-white ">
         Welcome To Cloud Attendance Management System
       </h1>
       <div className="p-6 m-4">
